@@ -1,0 +1,26 @@
+{
+  "name": "prisma-timezone",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "prisma:generate": "yarn prisma generate",
+    "dcc": "docker-compose -f development/docker-compose.yaml",
+    "dev": "node index",
+    "add-new": "yarn dev add-new",
+    "retrieve": "yarn dev"
+  },
+  "files": [
+    "prisma/*",
+    "package.json"
+  ],
+  "dependencies": {
+    "@prisma/client": "^3.11.1",
+    "date-fns": "^2.29.3"
+  },
+  "devDependencies": {
+    "prisma": "^3.11.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

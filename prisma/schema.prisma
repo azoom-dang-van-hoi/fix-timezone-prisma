@@ -1,0 +1,29 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id        Int      @id @default(autoincrement())
+    name      String?
+    createdAt DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.DateTime()
+    post      Post[]
+
+    @@map("user")
+}
+
+model Post {
+    id         Int       @id @default(autoincrement())
+    user       User      @relation(fields: [userId], references: [id])
+    userId     Int       @map("user_id")
+    targetDate DateTime? @map("target_date") @db.Date
+    createdAt  DateTime  @default(dbgenerated("NOW()")) @map("created_at") @db.DateTime()
+    content    String?
+
+    @@map("post")
+}
