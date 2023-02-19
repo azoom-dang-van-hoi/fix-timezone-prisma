@@ -5,9 +5,7 @@
   "scripts": {
     "prisma:generate": "yarn prisma generate",
     "dcc": "docker-compose -f development/docker-compose.yaml",
-    "dev": "node index",
-    "add-new": "yarn dev add-new",
-    "retrieve": "yarn dev"
+    "dev": "env $(grep -v '^#' .env) nodemon index.js"
   },
   "files": [
     "prisma/*",
@@ -15,7 +13,11 @@
   ],
   "dependencies": {
     "@prisma/client": "^3.11.1",
-    "date-fns": "^2.29.3"
+    "cors": "^2.8.5",
+    "date-fns": "^2.29.3",
+    "express": "^4.17.2",
+    "express-promise-router": "^4.1.1",
+    "nodemon": "^2.0.20"
   },
   "devDependencies": {
     "prisma": "^3.11.1"

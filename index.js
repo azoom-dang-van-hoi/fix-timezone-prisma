@@ -1,40 +1,20 @@
-import { prisma, convertUTCToJP } from "./database.js"
+import express from "express"
+import cors from "cors"
+import statuses from "statuses"
+import router from "./routes/index.js"
 
-main()
-async function main() {
-  const isAddNewRecord = process.argv[2] == "add-new"
-
-  const data = isAddNewRecord ? await addNewRecord() : await getUsers()
-
-  console.log(data)
+// Customize express response
+express.response.sendStatus = function (statusCode) {
+  const body = { message: statuses[statusCode] || String(statusCode) }
+  this.statusCode = statusCode
+  this.type("json")
+  this.send(body)
 }
+const app = express()
+const port = process.env.PORT || 5009
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
+app.use(router)
 
-function getUsers() {
-  return prisma.user.findMany({
-    include: {
-      post: true,
-    },
-  })
-}
-
-function addNewRecord() {
-  return prisma.$transaction(async (trx) => {
-    const user = await trx.user.create({
-      data: {
-        name: "Test User",
-      },
-    })
-    const post = await trx.post.create({
-      data: {
-        content: "Post content",
-        targetDate: new Date(),
-        userId: user.id,
-        createdAt: convertUTCToJP(new Date()),
-      },
-    })
-    return {
-      user,
-      post,
-    }
-  })
-}
+app.listen(port, () => console.log("Server start on port", port))

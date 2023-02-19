@@ -12,6 +12,7 @@ model User {
     id        Int      @id @default(autoincrement())
     name      String?
     createdAt DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.DateTime()
+    updatedAt DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @map("updated_at") @db.DateTime()
     post      Post[]
 
     @@map("user")
@@ -23,6 +24,7 @@ model Post {
     userId     Int       @map("user_id")
     targetDate DateTime? @map("target_date") @db.Date
     createdAt  DateTime  @default(dbgenerated("NOW()")) @map("created_at") @db.DateTime()
+    updatedAt  DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @map("updated_at") @db.DateTime()
     content    String?
 
     @@map("post")
