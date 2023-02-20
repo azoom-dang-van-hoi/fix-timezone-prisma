@@ -38,10 +38,15 @@ args {
 ### Testing: The `/v1` route uses the regular Prisma config, while the `/v2` route has fixed Prisma's timezone issue.
 - Test performance (`route /v2/post/bulk-insert`): For the case of creating/updating a few records, the response time is not significantly affected. I tested creating 1000 records, and the API with the timezone fix had a similar response time.
 ```
-v1 (normal config Prisma): 107.952, 134.357, 121.901, 127.487, 102.211, 96.026, 106.68, 119.202, 105.782, 119.135 
-   => `114.073ms`
-v2 (fix timezone Prisma): 116.569, 127.815, 128.098, 116.498, 110.355, 117.034, 115.782, 107.002, 124.934, 106.174 
-   => `117.026ms`
+Response time v1 (normal config Prisma): 107.952, 134.357, 121.901, 127.487, 102.211, 96.026, 106.68, 119.202, 105.782, 119.135 
+   => Average: `114.073ms`
+Response time v2 (fix timezone Prisma): 116.569, 127.815, 128.098, 116.498, 110.355, 117.034, 115.782, 107.002, 124.934, 106.174 
+   => Average: `117.026ms`
+
+Concurrency v1 (10s): 254, 271, 264, 263, 276
+  => Average: 266
+Concurrency v2 (10s): 247, 245, 256, 257, 247
+  => Average: 251  
 ```
 - In addition, I have tested with cases such as `create, update, and upsert`, and it still works quite well.
 - Note: Some cases need to be retested: rawQuery and querying data with time-related conditions.
